@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #080b12;
+  --surface: #0e1420;
+  --border: #1c2535;
+  --accent: #00f5a0;
+  --accent-dim: #00f5a020;
+  --danger: #ff3b5c;
+  --danger-dim: #ff3b5c20;
+  --warn: #ffb800;
+  --warn-dim: #ffb80020;
+  --text: #e2e8f0;
+  --muted: #4a5568;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 245, 160, 0.015) 2px,
+    rgba(0, 245, 160, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.safe       { color: var(--accent); }
+.suspicious { color: var(--warn); }
+.dangerous  { color: var(--danger); }
+
+.badge-safe       { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); }
+.badge-suspicious { background: var(--warn-dim);   color: var(--warn);   border: 1px solid var(--warn); }
+.badge-dangerous  { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger); }
