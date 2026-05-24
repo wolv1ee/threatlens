@@ -135,26 +135,29 @@ export default function Home() {
       </header>
 
       <main className="flex-1 p-6 max-w-4xl mx-auto w-full space-y-6" style={{ position: 'relative', zIndex: 1 }}>
+
         <div className="grid grid-cols-3 gap-4">
           {[
             { label: 'TOTAL SCANS', value: stats.total, color: 'var(--accent)' },
             { label: 'THREATS FOUND', value: stats.threats, color: 'var(--danger)' },
             { label: 'SAFE', value: stats.safe, color: 'var(--accent)' },
-          ].map(stat => (
-            <div key={stat.label} style={{
-              background: 'rgba(14, 20, 32, 0.5)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 12,
-            }} className="p-4 text-center">
+          ].map((stat, i) => (
+            <div key={stat.label}
+              className={`p-4 text-center stat-animate delay-${i + 1}`}
+              style={{
+                background: 'rgba(14, 20, 32, 0.5)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 12,
+              }}>
               <div className="font-mono text-2xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
               <div className="font-mono text-xs mt-1" style={{ color: 'var(--muted)' }}>{stat.label}</div>
             </div>
           ))}
         </div>
 
-        <div>
+        <div className="animate-fade-in-up delay-2">
           <h1 className="font-mono text-2xl font-bold tracking-tight" style={{ color: 'var(--accent)' }}>
             &gt;_ ANALYZE THREAT
           </h1>
@@ -163,13 +166,13 @@ export default function Home() {
           </p>
         </div>
 
-        <div style={{
+        <div className="animate-fade-in-up delay-3 p-6 space-y-4" style={{
           background: 'rgba(14, 20, 32, 0.5)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           border: '1px solid rgba(255,255,255,0.07)',
           borderRadius: 16,
-        }} className="p-6 space-y-4">
+        }}>
           <div className="flex gap-2">
             {(['url', 'file'] as const).map(t => (
               <button key={t} onClick={() => { setTab(t); reset() }}
@@ -192,7 +195,7 @@ export default function Home() {
                 className="flex-1 px-4 py-3 rounded-lg font-mono text-sm outline-none"
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text)' }} />
               <button onClick={handleScan} disabled={loading}
-                className="px-6 py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50"
+                className="px-6 py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
                 style={{ background: 'var(--accent)', color: '#000' }}>
                 {loading ? <Loader2 size={16} className="animate-spin" /> : 'SCAN'}
               </button>
@@ -211,7 +214,7 @@ export default function Home() {
                   onChange={e => { setFile(e.target.files?.[0] ?? null); reset() }} />
               </div>
               <button onClick={handleScan} disabled={loading || !file}
-                className="w-full py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50"
+                className="w-full py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
                 style={{ background: 'var(--accent)', color: '#000' }}>
                 {loading
                   ? <span className="flex items-center justify-center gap-2"><Loader2 size={16} className="animate-spin" />ANALYZING...</span>
@@ -224,13 +227,13 @@ export default function Home() {
         </div>
 
         {result && Cfg && (
-          <div style={{
+          <div className="animate-slide-in p-6 space-y-5" style={{
             background: 'rgba(14, 20, 32, 0.6)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: `1px solid ${result.risk === 'safe' ? 'rgba(0,245,160,0.3)' : result.risk === 'dangerous' ? 'rgba(255,59,92,0.3)' : 'rgba(255,184,0,0.3)'}`,
             borderRadius: 16,
-          }} className="p-6 space-y-5">
+          }}>
             <div className="flex items-center gap-3">
               <Cfg.icon size={28} className={result.risk} />
               <div>

@@ -47,3 +47,52 @@ body::before {
 .badge-safe       { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); }
 .badge-suspicious { background: var(--warn-dim);   color: var(--warn);   border: 1px solid var(--warn); }
 .badge-dangerous  { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,245,160,0.4); }
+  50%       { box-shadow: 0 0 24px rgba(0,245,160,0.8), 0 0 48px rgba(0,245,160,0.3); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(400%); opacity: 0; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.4s ease forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.stat-animate {
+  animation: countUp 0.5s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; opacity: 0; }
+.delay-2 { animation-delay: 0.2s; opacity: 0; }
+.delay-3 { animation-delay: 0.3s; opacity: 0; }
+.delay-4 { animation-delay: 0.4s; opacity: 0; }
+.delay-5 { animation-delay: 0.5s; opacity: 0; }
