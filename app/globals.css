@@ -155,3 +155,41 @@
 .link-hover:hover {
   opacity: 0.8;
 }
+.btn-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.btn-hover:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 245, 160, 0.3) !important;
+}
+.btn-hover:active {
+  transform: translateY(0px) !important;
+}
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  cursor: pointer;
+}
+.card-hover:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(0, 245, 160, 0.15) !important;
+}
+.tab-hover {
+  transition: all 0.15s ease !important;
+}
+.tab-hover:hover {
+  background: rgba(0, 245, 160, 0.08) !important;
+  color: var(--accent) !important;
+}
+.nav-hover {
+  transition: all 0.15s ease !important;
+}
+.nav-hover:hover {
+  background: rgba(0, 245, 160, 0.08) !important;
+  color: var(--accent) !important;
+}
+.link-hover {
+  transition: opacity 0.15s ease !important;
+}
+.link-hover:hover {
+  opacity: 0.7 !important;
+}
