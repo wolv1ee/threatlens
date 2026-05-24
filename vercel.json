@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     {
       "src": "frontend/package.json",
@@ -7,13 +7,28 @@
       "config": { "distDir": "dist" }
     },
     {
-      "src": "api/**/*.py",
+      "src": "api/scan/url.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/scan/file.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/scans/history.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/health.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.py" },
+    { "src": "/api/scan/url", "dest": "/api/scan/url.py" },
+    { "src": "/api/scan/file", "dest": "/api/scan/file.py" },
+    { "src": "/api/scans/history", "dest": "/api/scans/history.py" },
+    { "src": "/api/health", "dest": "/api/health.py" },
     { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+    { "src": "/.*", "dest": "/frontend/dist/index.html" }
   ]
 }
