@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 async function checkGoogleSafeBrowsing(url: string) {
   const key = process.env.GOOGLE_SAFE_BROWSING_KEY
@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
       ? 'dangerous'
       : (vt.detections ?? 0) > 0 ? 'suspicious' : 'safe'
 
+    const supabase = getSupabaseClient()
     await supabase.from('scans').insert({
       type: 'url',
       target: url,

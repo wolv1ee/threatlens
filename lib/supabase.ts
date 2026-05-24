@@ -1,6 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseKey = process.env.SUPABASE_KEY!
+export function getSupabaseClient(): SupabaseClient {
+  const supabaseUrl = process.env.SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('SUPABASE_URL and SUPABASE_KEY are required.')
+  }
+
+  return createClient(supabaseUrl, supabaseKey)
+}

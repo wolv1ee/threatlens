@@ -77,8 +77,10 @@ export default function HistoryPage() {
         {error && <p className="font-mono text-sm" style={{ color: 'var(--danger)' }}>Error: {error}</p>}
 
         {!loading && scans.length === 0 && (
-          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-            className="rounded-xl p-10 text-center font-mono text-sm" style2={{ color: 'var(--muted)' }}>
+          <div
+            className="rounded-xl p-10 text-center font-mono text-sm"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--muted)' }}
+          >
             No scans yet. Go scan something!
           </div>
         )}

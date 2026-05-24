@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { supabase } from '@/lib/supabase'
+import { getSupabaseClient } from '@/lib/supabase'
 
 async function checkVirusTotalFile(hash: string) {
   const key = process.env.VIRUSTOTAL_API_KEY
@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
     const vt = await checkVirusTotalFile(hash)
     const risk = vt.safe ? 'safe' : 'dangerous'
 
+    const supabase = getSupabaseClient()
     await supabase.from('scans').insert({
       type: 'file',
       target: file.name,
