@@ -27,6 +27,33 @@ const riskConfig = {
   dangerous:  { icon: XCircle,       label: 'DANGEROUS',  cls: 'badge-dangerous' },
 }
 
+const hoverIn = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.transform = 'translateY(-2px)'
+  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,245,160,0.3)'
+}
+const hoverOut = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.transform = 'translateY(0px)'
+  e.currentTarget.style.boxShadow = 'none'
+}
+const cardIn = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.transform = 'translateY(-3px)'
+  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,245,160,0.15)'
+  e.currentTarget.style.borderColor = 'rgba(0,245,160,0.25)'
+}
+const cardOut = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.transform = 'translateY(0px)'
+  e.currentTarget.style.boxShadow = 'none'
+  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
+}
+const navIn = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.background = 'rgba(0,245,160,0.08)'
+  e.currentTarget.style.color = 'var(--accent)'
+}
+const navOut = (e: React.MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
+  e.currentTarget.style.color = 'var(--muted)'
+}
+
 export default function Home() {
   const [tab, setTab]         = useState<'url' | 'file'>('url')
   const [url, setUrl]         = useState('')
@@ -127,15 +154,16 @@ export default function Home() {
             style={{ background: 'var(--accent)', color: '#000' }}>
             <Terminal size={14} /> SCAN
           </span>
-          <Link href="/history" className="flex items-center gap-2 px-4 py-2 rounded font-mono text-sm transition-all"
-            style={{ color: 'var(--muted)', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <Link href="/history"
+            onMouseEnter={navIn} onMouseLeave={navOut}
+            className="flex items-center gap-2 px-4 py-2 rounded font-mono text-sm"
+            style={{ color: 'var(--muted)', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', transition: 'all 0.15s ease' }}>
             <Clock size={14} /> HISTORY
           </Link>
         </nav>
       </header>
 
       <main className="flex-1 p-6 max-w-4xl mx-auto w-full space-y-6" style={{ position: 'relative', zIndex: 1 }}>
-
         <div className="grid grid-cols-3 gap-4">
           {[
             { label: 'TOTAL SCANS', value: stats.total, color: 'var(--accent)' },
@@ -143,6 +171,7 @@ export default function Home() {
             { label: 'SAFE', value: stats.safe, color: 'var(--accent)' },
           ].map((stat, i) => (
             <div key={stat.label}
+              onMouseEnter={cardIn} onMouseLeave={cardOut}
               className={`p-4 text-center stat-animate delay-${i + 1}`}
               style={{
                 background: 'rgba(14, 20, 32, 0.5)',
@@ -150,6 +179,8 @@ export default function Home() {
                 WebkitBackdropFilter: 'blur(16px)',
                 border: '1px solid rgba(255,255,255,0.07)',
                 borderRadius: 12,
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+                cursor: 'pointer',
               }}>
               <div className="font-mono text-2xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
               <div className="font-mono text-xs mt-1" style={{ color: 'var(--muted)' }}>{stat.label}</div>
@@ -176,10 +207,22 @@ export default function Home() {
           <div className="flex gap-2">
             {(['url', 'file'] as const).map(t => (
               <button key={t} onClick={() => { setTab(t); reset() }}
-                className="px-4 py-2 rounded font-mono text-sm font-semibold transition-all"
+                onMouseEnter={e => {
+                  if (tab !== t) {
+                    e.currentTarget.style.background = 'rgba(0,245,160,0.08)'
+                    e.currentTarget.style.color = 'var(--accent)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (tab !== t) {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
+                    e.currentTarget.style.color = 'var(--muted)'
+                  }
+                }}
+                className="px-4 py-2 rounded font-mono text-sm font-semibold"
                 style={tab === t
-                  ? { background: 'var(--accent)', color: '#000' }
-                  : { color: 'var(--muted)', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  ? { background: 'var(--accent)', color: '#000', transition: 'all 0.15s ease' }
+                  : { color: 'var(--muted)', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', transition: 'all 0.15s ease' }}>
                 {t === 'url'
                   ? <span className="flex items-center gap-2"><Link2 size={14} />URL</span>
                   : <span className="flex items-center gap-2"><Upload size={14} />FILE</span>}
@@ -191,12 +234,13 @@ export default function Home() {
             <div className="flex gap-3">
               <input type="text" value={url} onChange={e => setUrl(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleScan()}
-                placeholder="https://suspicious-site.com"
+                placeholder="https://yourlink.com"
                 className="flex-1 px-4 py-3 rounded-lg font-mono text-sm outline-none"
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text)' }} />
               <button onClick={handleScan} disabled={loading}
+                onMouseEnter={hoverIn} onMouseLeave={hoverOut}
                 className="px-6 py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
-                style={{ background: 'var(--accent)', color: '#000' }}>
+                style={{ background: 'var(--accent)', color: '#000', transition: 'transform 0.15s ease, box-shadow 0.15s ease' }}>
                 {loading ? <Loader2 size={16} className="animate-spin" /> : 'SCAN'}
               </button>
             </div>
@@ -205,8 +249,9 @@ export default function Home() {
           {tab === 'file' && (
             <div className="space-y-3">
               <div onClick={() => fileRef.current?.click()}
+                onMouseEnter={cardIn} onMouseLeave={cardOut}
                 className="border-2 border-dashed rounded-lg p-10 text-center cursor-pointer"
-                style={{ borderColor: 'rgba(0,245,160,0.2)', color: 'var(--muted)', background: 'rgba(0,0,0,0.2)' }}>
+                style={{ borderColor: 'rgba(0,245,160,0.2)', color: 'var(--muted)', background: 'rgba(0,0,0,0.2)', transition: 'transform 0.2s ease, box-shadow 0.2s ease' }}>
                 <Upload size={32} className="mx-auto mb-3" style={{ color: 'var(--accent)' }} />
                 <p className="font-mono text-sm">{file ? file.name : 'DROP FILE OR CLICK TO BROWSE'}</p>
                 {file && <p className="font-mono text-xs mt-1">{(file.size / 1024).toFixed(1)} KB</p>}
@@ -214,8 +259,9 @@ export default function Home() {
                   onChange={e => { setFile(e.target.files?.[0] ?? null); reset() }} />
               </div>
               <button onClick={handleScan} disabled={loading || !file}
+                onMouseEnter={hoverIn} onMouseLeave={hoverOut}
                 className="w-full py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
-                style={{ background: 'var(--accent)', color: '#000' }}>
+                style={{ background: 'var(--accent)', color: '#000', transition: 'transform 0.15s ease, box-shadow 0.15s ease' }}>
                 {loading
                   ? <span className="flex items-center justify-center gap-2"><Loader2 size={16} className="animate-spin" />ANALYZING...</span>
                   : 'SCAN FILE'}
@@ -283,7 +329,9 @@ export default function Home() {
         <span style={{ color: 'var(--muted)' }}>Powered by VirusTotal and Google Safe Browsing</span>
         <span style={{ color: 'var(--muted)', margin: '0 8px' }}>·</span>
         <a href="https://saadmahmud.dev" target="_blank" rel="noopener noreferrer"
-          style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+          onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+          style={{ color: 'var(--accent)', textDecoration: 'none', transition: 'opacity 0.15s ease' }}>
           Built by Saad Mahmud
         </a>
       </footer>
