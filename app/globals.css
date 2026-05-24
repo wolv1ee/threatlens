@@ -106,3 +106,52 @@
 .delay-3 { animation-delay: 0.3s; opacity: 0; }
 .delay-4 { animation-delay: 0.4s; opacity: 0; }
 .delay-5 { animation-delay: 0.5s; opacity: 0; }
+.btn-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 245, 160, 0.25);
+}
+
+.btn-hover:active {
+  transform: translateY(0px);
+}
+
+.card-hover {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 245, 160, 0.1);
+  border-color: rgba(0, 245, 160, 0.2) !important;
+}
+
+.tab-hover {
+  transition: all 0.15s ease;
+}
+
+.tab-hover:hover {
+  background: rgba(0, 245, 160, 0.08) !important;
+  color: var(--accent) !important;
+  border-color: rgba(0, 245, 160, 0.2) !important;
+}
+
+.nav-hover {
+  transition: all 0.15s ease;
+}
+
+.nav-hover:hover {
+  background: rgba(0, 245, 160, 0.08) !important;
+  color: var(--accent) !important;
+}
+
+.link-hover {
+  transition: opacity 0.15s ease;
+}
+
+.link-hover:hover {
+  opacity: 0.8;
+}
