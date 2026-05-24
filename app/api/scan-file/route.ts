@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const vt = await checkVirusTotalFile(hash)
     const risk = vt.safe ? 'safe' : 'dangerous'
 
-    await supabase.table('scans').insert({
+    await supabase.from('scans').insert({
       type: 'file',
       target: file.name,
       file_hash: hash,

@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       ? 'dangerous'
       : (vt.detections ?? 0) > 0 ? 'suspicious' : 'safe'
 
-    await supabase.table('scans').insert({
+    await supabase.from('scans').insert({
       type: 'url',
       target: url,
       risk,
