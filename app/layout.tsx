@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'ThreatLens - Malware and Phishing Analyzer',
-  description: 'Scan URLs for phishing and files for malware',
+  title: 'ThreatLens - Malware and Phishing Detection Tool',
+  description: 'Scan URLs for phishing and files for malware, Making your Cyber life safer!',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
