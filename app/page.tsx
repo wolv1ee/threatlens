@@ -239,7 +239,7 @@ export default function Home() {
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text)' }} />
               <button onClick={handleScan} disabled={loading}
                 onMouseEnter={hoverIn} onMouseLeave={hoverOut}
-                className="px-6 py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
+                className="px-6 py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50"
                 style={{ background: 'var(--accent)', color: '#000', transition: 'transform 0.15s ease, box-shadow 0.15s ease' }}>
                 {loading ? <Loader2 size={16} className="animate-spin" /> : 'SCAN'}
               </button>
@@ -260,7 +260,7 @@ export default function Home() {
               </div>
               <button onClick={handleScan} disabled={loading || !file}
                 onMouseEnter={hoverIn} onMouseLeave={hoverOut}
-                className="w-full py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50 animate-pulse-glow"
+                className="w-full py-3 rounded-lg font-mono font-bold text-sm disabled:opacity-50"
                 style={{ background: 'var(--accent)', color: '#000', transition: 'transform 0.15s ease, box-shadow 0.15s ease' }}>
                 {loading
                   ? <span className="flex items-center justify-center gap-2"><Loader2 size={16} className="animate-spin" />ANALYZING...</span>
@@ -327,6 +327,13 @@ export default function Home() {
         position: 'relative', zIndex: 1,
       }} className="py-4 text-center font-mono text-xs">
         <span style={{ color: 'var(--muted)' }}>Powered by VirusTotal and Google Safe Browsing</span>
+        <span style={{ color: 'var(--muted)', margin: '0 8px' }}>·</span>
+        <a href="/privacy"
+          onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
+          onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+          style={{ color: 'var(--muted)', textDecoration: 'none', transition: 'opacity 0.15s ease' }}>
+          Privacy Policy
+        </a>
         <span style={{ color: 'var(--muted)', margin: '0 8px' }}>·</span>
         <a href="https://saadmahmud.dev" target="_blank" rel="noopener noreferrer"
           onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
