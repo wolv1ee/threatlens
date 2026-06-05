@@ -47,7 +47,7 @@ export default function PrivacyPage() {
           },
           {
             title: '6. Data Retention',
-            body: 'Scan records may be retained indefinitely for the purpose of displaying scan history and statistics. We do not sell or share this data with third parties beyond the scanning APIs mentioned above.',
+            body: 'Scan records are automatically deleted every 24 hours. We do not sell or share this data with third parties beyond the scanning APIs mentioned above.',
           },
           {
             title: '7. Contact',

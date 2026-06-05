@@ -331,7 +331,7 @@ export default function Home() {
         <a href="/privacy"
           onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
           onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
-          style={{ color: 'var(--muted)', textDecoration: 'none', transition: 'opacity 0.15s ease' }}>
+          style={{ color: 'var(--accent)', textDecoration: 'none', transition: 'opacity 0.15s ease' }}>
           Privacy Policy
         </a>
         <span style={{ color: 'var(--muted)', margin: '0 8px' }}>·</span>
