@@ -2,7 +2,7 @@
 
 A web app for scanning URLs for phishing and files for malware, powered by VirusTotal and Google Safe Browsing.
 
-**Live demo:** https://threatlens-nine.vercel.app
+**Live demo:** https://threatlens-eight.vercel.app
 
 ---
 
