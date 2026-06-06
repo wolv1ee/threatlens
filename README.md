@@ -26,12 +26,6 @@ A web app for scanning URLs for phishing and files for malware, powered by Virus
 
 ---
 
-## Screenshots
-
-> Add screenshots here
-
----
-
 ## Getting Started
 
 ### 1. Clone the repo
