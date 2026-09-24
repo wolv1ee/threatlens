@@ -6,6 +6,10 @@ import {
 } from 'lucide-react'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScanningPanel from './components/ScanningPanel'
+
+const URL_SCAN_STEPS = ['Checking Google Safe Browsing', 'Checking VirusTotal', 'Compiling verdict']
+const FILE_SCAN_STEPS = ['Hashing file (SHA-256)', 'Checking VirusTotal', 'Running YARA rules', 'Compiling verdict']
 
 type Risk = 'safe' | 'suspicious' | 'dangerous'
 type YaraSeverity = 'info' | 'low' | 'medium' | 'high' | 'critical'
@@ -115,7 +119,8 @@ export default function Home() {
       <main className="flex-1 px-6 md:px-10 py-12 max-w-5xl mx-auto w-full">
         <div className="max-w-xl">
           <h1 className="text-[28px] font-semibold tracking-tight" style={{ color: 'var(--ink)' }}>
-            Analyze a URL or file
+            <span style={{ color: 'var(--signal)' }}>{'>'}</span> Analyze a URL or file
+            <span className="caret" aria-hidden="true" />
           </h1>
           <p className="mt-2 text-[15px] leading-relaxed" style={{ color: 'var(--ink-dim)' }}>
             Checks reputation against VirusTotal and Google Safe Browsing, and runs uploaded
@@ -124,14 +129,14 @@ export default function Home() {
         </div>
 
         <div className="mt-8 panel p-5 md:p-6">
-          <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: 'var(--panel-raised)' }}>
+          <div className="flex gap-1 p-1 rounded-md w-fit" style={{ background: 'var(--panel-raised)' }}>
             {(['url', 'file'] as const).map(t => (
               <button
                 key={t}
                 onClick={() => { setTab(t); reset() }}
                 className="flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors"
                 style={tab === t
-                  ? { background: 'var(--signal)', color: '#04101f' }
+                  ? { background: 'var(--signal)', color: '#02150c' }
                   : { color: 'var(--ink-dim)' }}
               >
                 {t === 'url' ? <Link2 size={14} /> : <Upload size={14} />}
@@ -148,7 +153,7 @@ export default function Home() {
                 onChange={e => setUrl(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleScan()}
                 placeholder="example.com/path"
-                className="flex-1 px-4 py-2.5 rounded-lg text-sm outline-none font-data"
+                className="flex-1 px-4 py-2.5 rounded-md text-sm outline-none font-data"
                 style={{ background: 'var(--panel-raised)', border: '1px solid var(--line)', color: 'var(--ink)' }}
               />
               <ScanButton loading={loading} onClick={handleScan} label="Scan URL" />
@@ -167,7 +172,7 @@ export default function Home() {
                   const dropped = e.dataTransfer.files?.[0]
                   if (dropped) { setFile(dropped); reset() }
                 }}
-                className="rounded-lg p-8 text-center cursor-pointer transition-colors"
+                className="rounded-md p-8 text-center cursor-pointer transition-colors"
                 style={{
                   border: `1px dashed ${dragOver ? 'var(--signal)' : 'var(--line)'}`,
                   background: dragOver ? 'var(--signal-dim)' : 'var(--panel-raised)',
@@ -206,6 +211,13 @@ export default function Home() {
           <StatItem label="Clean" value={stats.safe} tone="var(--safe)" />
         </div>
 
+        {loading && (
+          <ScanningPanel
+            label={tab === 'url' ? (url.trim() || 'target') : (file?.name ?? 'file')}
+            steps={tab === 'url' ? URL_SCAN_STEPS : FILE_SCAN_STEPS}
+          />
+        )}
+
         {result && Cfg && (
           <div
             className="mt-8 panel overflow-hidden"
@@ -221,7 +233,7 @@ export default function Home() {
             </div>
 
             {result.risk === 'dangerous' && (
-              <div className="mx-5 md:mx-6 mt-5 flex gap-3 p-4 rounded-lg" style={{ background: 'var(--danger-dim)', border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)' }}>
+              <div className="mx-5 md:mx-6 mt-5 flex gap-3 p-4 rounded-md" style={{ background: 'var(--danger-dim)', border: '1px solid color-mix(in srgb, var(--danger) 30%, transparent)' }}>
                 <ShieldAlert size={18} style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 1 }} />
                 <div>
                   <p className="text-sm font-semibold" style={{ color: 'var(--danger)' }}>
@@ -305,8 +317,8 @@ function ScanButton({ loading, onClick, label, disabled, full }: { loading: bool
     <button
       onClick={onClick}
       disabled={loading || disabled}
-      className={`${full ? 'w-full' : ''} ${loading ? 'scan-sweep' : ''} px-5 py-2.5 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-opacity`}
-      style={{ background: 'var(--signal)', color: '#04101f' }}
+      className={`${full ? 'w-full' : ''} ${loading ? 'scan-sweep' : ''} px-5 py-2.5 rounded-md text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-shadow`}
+      style={{ background: 'var(--signal)', color: '#02150c', boxShadow: loading || disabled ? 'none' : '0 0 16px var(--signal-dim)' }}
     >
       {loading
         ? <span className="flex items-center justify-center gap-2"><Loader2 size={15} className="animate-spin" />Scanning</span>

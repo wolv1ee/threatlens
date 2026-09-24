@@ -4,29 +4,29 @@
 
 @layer base {
   :root {
-    /* Base */
-    --bg: #0a0d13;
-    --panel: #10141d;
-    --panel-raised: #151a25;
-    --line: #232a38;
-    --line-soft: #1a202c;
+    /* Base - phosphor terminal */
+    --bg: #030805;
+    --panel: #071009;
+    --panel-raised: #0b1810;
+    --line: #1d4027;
+    --line-soft: #142c1b;
 
     /* Text */
-    --ink: #e8eaf1;
-    --ink-dim: #8790a3;
-    --ink-faint: #545d70;
+    --ink: #cdffd8;
+    --ink-dim: #6fb884;
+    --ink-faint: #396b48;
 
     /* Signal - used for interactive/brand accents only */
-    --signal: #4c8dff;
-    --signal-dim: #4c8dff14;
+    --signal: #00ff6a;
+    --signal-dim: #00ff6a14;
 
     /* Verdict colors - reserved for scan results, nowhere else */
-    --safe: #2fbf8f;
-    --safe-dim: #2fbf8f14;
-    --warn: #e2a239;
-    --warn-dim: #e2a23914;
-    --danger: #e5484d;
-    --danger-dim: #e5484d14;
+    --safe: #00ff6a;
+    --safe-dim: #00ff6a14;
+    --warn: #ffcc33;
+    --warn-dim: #ffcc3314;
+    --danger: #ff3b3b;
+    --danger-dim: #ff3b3b1a;
   }
 
   * {
@@ -39,9 +39,11 @@
 
   body {
     min-height: 100vh;
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image: radial-gradient(ellipse 1100px 620px at 50% -10%, rgba(0, 255, 106, 0.08), transparent 60%);
+    background-repeat: no-repeat;
     color: var(--ink);
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'IBM Plex Mono', monospace;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -69,7 +71,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.65rem;
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -80,13 +82,41 @@
 .badge-dangerous  { background: var(--danger-dim); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, transparent); }
 
 .panel {
-  background: var(--panel);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
 }
 
 .divider {
   border-bottom: 1px solid var(--line-soft);
+}
+
+/* Ambient digital rain - the one continuous texture. Kept dim so it never
+   fights legibility, and paused entirely under reduced motion. */
+.matrix-rain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+/* Static CRT texture - scanlines + vignette. No motion, purely decorative. */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 255, 106, 0.018) 3px,
+      rgba(0, 0, 0, 0) 4px
+    ),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35) 100%);
 }
 
 /* Single, deliberate motion: a scanning sweep shown only while a scan is
@@ -104,12 +134,109 @@
   position: absolute;
   inset: 0;
   width: 40%;
-  background: linear-gradient(90deg, transparent, rgba(76, 141, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 106, 0.4), transparent);
   animation: scan-sweep 1.1s ease-in-out infinite;
+}
+
+/* Scan-in-progress centerpiece: a radar sweep, standing in for the actual
+   detection pipeline running server-side. This is the one place the design
+   spends its motion budget - everything else stays still. */
+.radar {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: radial-gradient(circle at 35% 30%, var(--panel-raised), var(--panel) 70%);
+  overflow: hidden;
+}
+.radar-ring {
+  position: absolute;
+  inset: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+}
+.radar-ring.ring-2 {
+  inset: 34px;
+}
+.radar-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 265deg, rgba(0, 255, 106, 0.6) 320deg, transparent 358deg);
+  animation: radar-spin 2.4s linear infinite;
+}
+.radar-blip {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 6px var(--signal);
+  animation: radar-blip 2.4s ease-in-out infinite;
+}
+@keyframes radar-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes radar-blip {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  8%, 22%  { opacity: 1; transform: scale(1); }
+  40%      { opacity: 0; transform: scale(0.6); }
+}
+
+/* Terminal cursor - used sparingly, as the prompt glyph and boot screen caret */
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: var(--signal);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Boot sequence overlay */
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #020503;
+  color: var(--signal);
+  font-family: 'IBM Plex Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+.boot-screen.boot-fading {
+  opacity: 0;
+}
+.boot-lines {
+  width: 100%;
+  max-width: 460px;
+}
+.boot-line {
+  font-size: 13px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  text-shadow: 0 0 6px rgba(0, 255, 106, 0.5);
+}
+.boot-ok {
+  color: var(--ink-faint);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scan-sweep::after { animation: none; }
+  .radar-sweep, .radar-blip { animation: none; }
+  .radar-sweep { display: none; }
+  .caret { animation: none; opacity: 1; }
+  .matrix-rain { display: none; }
   html { scroll-behavior: auto; }
 }
 

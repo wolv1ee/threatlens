@@ -15,11 +15,11 @@ export default function Header() {
   return (
     <header
       className="sticky top-0 z-20 px-6 md:px-10"
-      style={{ background: 'rgba(10,13,19,0.85)', backdropFilter: 'blur(10px)', borderBottom: '1px solid var(--line)' }}
+      style={{ background: 'rgba(3,8,5,0.85)', backdropFilter: 'blur(10px)', borderBottom: '1px solid var(--line)' }}
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2.5">
-          <ShieldHalf size={20} strokeWidth={2} style={{ color: 'var(--signal)' }} />
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <ShieldHalf size={20} strokeWidth={2} style={{ color: 'var(--signal)', filter: 'drop-shadow(0 0 4px var(--signal-dim))' }} />
           <span className="text-[15px] font-semibold tracking-tight" style={{ color: 'var(--ink)' }}>
             ThreatLens
           </span>
